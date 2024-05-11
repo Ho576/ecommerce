@@ -15,7 +15,7 @@ export const register = async (req,res)=>{
     const hashedPassword = bcrypt.hashSync(password,parseInt(process.env.SALTROUND));
 
     const createUser = await userModel.create({userName,email,password:hashedPassword});
-
+    
     await SendEmail(email,`welcom`,`<h2>Hello ya ${userName}</h2>`)
     return res.status(201).json({message:"success",user:createUser});
 }
@@ -51,6 +51,7 @@ export const sendCode = async (req,res)=>{
         return res.status(404).json({message:"user not found"})
     }
 
+   
     await SendEmail(email,`reset password`,`<h2>code is : ${code}</h2>`)
     return res.status(200).json(user)
 

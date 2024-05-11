@@ -2,6 +2,7 @@ import connectDB from '../db/connection.js';
 import categoriesRouter from './modules/category/category.router.js';
 import productRouter from './modules/product/product.router.js';
 import authRouter from './modules/auth/auth.router.js';
+import subCategoriesRouter from './modules/subCategory/subCategory.router.js';
 import cors from 'cors';
 
  
@@ -15,6 +16,7 @@ app.get('/', (req, res)=>{
 })
 app.use('/auth', authRouter);
 app.use('/categories', categoriesRouter);
+app.use('/subCategories', subCategoriesRouter);
 app.use('/products', productRouter);
 app.use('*', (req, res)=>{
     return res.status(404).json({message: "page not found"});

@@ -7,7 +7,6 @@ export const roles = {
 }
 
 export const auth = (accessRole = [])=>{
-
     
     return async (req,res,next)=>{
         

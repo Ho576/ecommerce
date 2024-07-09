@@ -15,9 +15,17 @@ export const register = async (req,res)=>{
     const hashedPassword = bcrypt.hashSync(password,parseInt(process.env.SALTROUND));
 
     const createUser = await userModel.create({userName,email,password:hashedPassword});
-    
-    await SendEmail(email,`welcom`,`<h2>Hello ya ${userName}</h2>`)
+    token = jwt.sign({email},process.env.CONFIRM_EMAILTOKEN)
+    await SendEmail(email,`welcom`,userName,token)
     return res.status(201).json({message:"success",user:createUser});
+}
+
+export const confirmEmail = async (req,res)=>{
+    const token = req.params.token;
+    const decoded = jwt.verify(token,process.env.CONFIRM_EMAILTOKEN);
+    await userModel.findByIdAndUpdate({email:decoded.email},{confirmEmail:true});
+
+    return res.status(200).json({message:"success"});
 }
 
 export const login = async (req,res)=>{
@@ -80,3 +88,4 @@ export const forgetPassword = async (req,res)=>{
     return res.status(200).json({message:"success"});
 
 }
+
